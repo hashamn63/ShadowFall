@@ -3,6 +3,7 @@
 import pygame
 import random
 import sys
+import os
 
 pygame.init()
 
@@ -76,7 +77,7 @@ def narrative_screen(text):
 # Main menu code
 def main_menu():
    screen.fill(GREY)
-   title_img=pygame.image.load("title2.png")
+   title_img=pygame.image.load(os.path.dirname("title2.png"))
    title_img=pygame.transform.scale(title_img, (250, 188))
    screen.blit(title_img, (270 , 25))
    draw_text("Press 1 to Play Level 1", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 30, WHITE, center=True)
@@ -95,15 +96,15 @@ def level_1():
    narrative_screen("As the first wave of enemy ships closes in, you must navigate your fighter through the debris field and survive the onslaught. The safety of Zorath depends on your skill and courage.")
 
    # Loading assests
-   ship_img = pygame.image.load("spaceship.png")
+   ship_img = pygame.image.load(os.path.dirname("spaceship.png"))
    ship_img = pygame.transform.scale(ship_img, (50, 50))
-   enemy_img = pygame.image.load("enemy.png")
+   enemy_img = pygame.image.load(os.path.dirname("enemy.png"))
    enemy_img = pygame.transform.scale(enemy_img, (50, 50))
-   background = pygame.image.load("background.png")
+   background = pygame.image.load(os.path.dirname("background.png"))
 
 
    # Music controls (1)
-   pygame.mixer.music.load("bgmusic.mp3")
+   pygame.mixer.music.load(os.path.dirname("bgmusic.mp3"))
    pygame.mixer.music.set_volume(0.5)
    pygame.mixer.music.play(-1)
   
