@@ -12,7 +12,7 @@ screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption("Shadowfall: Levels")
 
 WHITE = (255, 255, 255)
-BLACK = (0, 0, 0)
+GREY = (31, 27, 24)
 RED = (255, 0, 0)
 GREEN = (50, 255, 50)
 BLUE = (0, 0, 255)
@@ -43,12 +43,12 @@ prologue_text = (
 
 
 def narrative_screen(text):
-   screen.fill(BLACK)
+   screen.fill(GREY)
    lines = []
    words = text.split(" ")
    line = ""
    for word in words:
-       test_line = line + word + " "
+       test_line = line + word + " "    
        if font.size(test_line)[0] <= SCREEN_WIDTH - 40:
            line = test_line
        else:
@@ -75,8 +75,10 @@ def narrative_screen(text):
 
 # Main menu code
 def main_menu():
-   screen.fill(BLACK)
-   draw_text("SHADOWFALL", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 4, WHITE, center=True)
+   screen.fill(GREY)
+   title_img=pygame.image.load("title2.png")
+   title_img=pygame.transform.scale(title_img, (250, 188))
+   screen.blit(title_img, (270 , 25))
    draw_text("Press 1 to Play Level 1", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 30, WHITE, center=True)
    if level_1_completed:
        draw_text("Press 2 to Play Level 2", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 10, WHITE, center=True)
@@ -140,7 +142,7 @@ def level_1():
 
     # LEVEL 1 MAIN LOOP
    while running:
-       screen.fill(BLACK)
+       screen.fill(GREY)
        screen.blit(background, (0, 0))
 
        # Checking events
@@ -225,7 +227,7 @@ def level_1():
 # Level 2 Game code (Game 2)
 def level_2():
 
-   narrative_screen("With the enemy fleet neutralized, you land on their mothership. Armed only with The Excaliber and the finest magical powers in the galaxy, you must confront the alien leader and destroy the ultimate weapon. THE MECH BOSS!")
+   narrative_screen("With the enemy fleet neutralized, you land on their mothership. Armed only with The Excaliber and the finest magical powers in the galaxy, you must confront Azorath, the alien leader, and destroy the ultimate weapon. THE MECH BOSS!")
 
    # Loading assets for Level 2
    background = pygame.image.load("background2.png")
@@ -251,7 +253,7 @@ def level_2():
    player_gravity = 1
    player_velocity_y = 0
    is_jumping = False
-   health = 150
+   health = 100
 
    monsters = []
    monster_speed = 2
@@ -303,7 +305,7 @@ def level_2():
 
    # MAIN GAME LOOP LEVEL 2
    while running:
-       screen.fill(BLACK)
+       screen.fill(GREY)
        screen.blit(background, (0, 0))
        keys = pygame.key.get_pressed()
 
@@ -423,46 +425,41 @@ def level_2():
                game_over = True
 
        elif game_completed:
-           screen.fill(BLACK)
+           screen.fill(GREY)
            draw_text("You Defeated the Boss!", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 20, GREEN, center=True)
            draw_text("Press M to Return to Menu", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 20, WHITE, center=True)
-           for event in pygame.event.get():
-               if event.type == pygame.KEYDOWN:
-                   if event.key == pygame.K_m:  
-                       running = False
+           if keys[pygame.K_m]:
+                    running = False
            pygame.display.flip()
            pygame.mixer.music.stop()
             
        elif game_over:
-           screen.fill(BLACK)
+           screen.fill(GREY)
            draw_text("Game Over", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 20, RED, center=True)
            draw_text("Press R to Restart", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 20, WHITE, center=True)
            draw_text("Press M to Return to Menu", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 60, WHITE, center=True)
            pygame.display.flip()
            pygame.mixer.music.stop()
 
-           # game over state
-           for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_m:  
-                        running = False
-                    elif event.key == pygame.K_r:
-                        platforms = [
-                            pygame.Rect(SCREEN_WIDTH + i * 300, random.randint(200, SCREEN_HEIGHT - 150), 200, 20)
-                            for i in range(15)]
-                        monsters.clear() # resetting varaibles
-                        orbs.clear()
-                        boss_projectiles.clear()
-                        boss_active = False
-                        boss_health = 200
-                        orbs_collected = 0
-                        platforms_passed = 0
-                        player_x = 50
-                        player_y = SCREEN_HEIGHT - 150
-                        health = 100
-                        game_over = False
-                        frame_count = 0
-                        pygame.mixer.music.play(-1)
+           if keys[pygame.K_m]:
+                    running = False
+           elif keys[pygame.K_r]:
+                platforms = [
+                    pygame.Rect(SCREEN_WIDTH + i * 300, random.randint(200, SCREEN_HEIGHT - 150), 200, 20)
+                    for i in range(15)]
+                monsters.clear() # resetting varaibles
+                orbs.clear()
+                boss_projectiles.clear()
+                boss_active = False
+                boss_health = 200
+                orbs_collected = 0
+                platforms_passed = 0
+                player_x = 50
+                player_y = SCREEN_HEIGHT - 150
+                health = 100
+                game_over = False
+                frame_count = 0
+                pygame.mixer.music.play(-1)
 
        pygame.display.flip()
        clock.tick(FPS)
