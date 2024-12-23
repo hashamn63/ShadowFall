@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 
 # Menu check
 menu_active = True
-level_1_completed = True
+level_1_completed = False
 
 # Draw text functions
 def draw_text(text, x, y, color, center=False):
@@ -194,13 +194,13 @@ def level_1():
 def level_2():
    # Load assets and variables for Level 2
    background = pygame.image.load("background2.png")
-   player_img = pygame.image.load("player.png")
+   player_img = pygame.image.load("player.png").convert_alpha()
    player_img = pygame.transform.scale(player_img, (50, 50))
-   monster_img = pygame.image.load("monster.png")
-   monster_img = pygame.transform.scale(monster_img, (50, 50))
-   boss_img = pygame.image.load("boss.png")
-   boss_img = pygame.transform.scale(boss_img, (100, 100))
-   orb_img = pygame.image.load("orb.png")
+   monster_img = pygame.image.load("monster2.png").convert_alpha()
+   monster_img = pygame.transform.scale(monster_img, (60, 60))
+   boss_img = pygame.image.load("boss.png").convert_alpha()
+   boss_img = pygame.transform.scale(boss_img, (150, 150))
+   orb_img = pygame.image.load("orb.png").convert_alpha()
    orb_img = pygame.transform.scale(orb_img, (15, 15))
 
    # Level 2 music
@@ -212,11 +212,11 @@ def level_2():
    player_x = 50
    player_y = SCREEN_HEIGHT - 150
    player_speed = 5
-   player_jump = -20
+   player_jump = -24
    player_gravity = 1
    player_velocity_y = 0
    is_jumping = False
-   health = 1000
+   health = 100
 
    monsters = []
    monster_speed = 2
@@ -428,15 +428,14 @@ def level_2():
            screen.fill(BLACK)
            draw_text("You Defeated the Boss!", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 - 20, GREEN, center=True)
            draw_text("Press M to Return to Menu", SCREEN_WIDTH // 2, SCREEN_HEIGHT // 2 + 20, WHITE, center=True)
-           pygame.display.flip()
-           pygame.mixer.music.stop()
-  
-            # Handle returning to the menu
            for event in pygame.event.get():
                if event.type == pygame.KEYDOWN:
                    if event.key == pygame.K_m:  # Return to menu
                        running = False
-                       pygame.mixer.music.stop()
+           pygame.display.flip()
+           pygame.mixer.music.stop()
+  
+            
 
 
        elif game_over:
