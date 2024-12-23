@@ -36,6 +36,43 @@ def draw_text(text, x, y, color, center=False):
        screen.blit(message, (x, y))
 
 
+prologue_text = (
+        "In a distant galaxy, the shadow of chaos looms over the peaceful colony of Zorath. "
+        "You, an elite pilot, have been tasked with defending the colony from invaders and "
+        "uncovering the secret behind the mysterious Shadowfall.")
+
+
+# Narrative screen function
+def narrative_screen(text):
+   screen.fill(BLACK)
+   lines = []
+   words = text.split(" ")
+   line = ""
+
+   for word in words:
+       test_line = line + word + " "
+       if font.size(test_line)[0] <= SCREEN_WIDTH - 40:
+           line = test_line
+       else:
+           lines.append(line)
+           line = word + " "
+   if line:
+       lines.append(line)
+
+   y_offset = (SCREEN_HEIGHT // 2) - (len(lines) * 20)
+   for i, line in enumerate(lines):
+       draw_text(line.strip(), SCREEN_WIDTH // 2, y_offset + i * 40, WHITE, center=True)
+   draw_text("Press SPACE to continue", SCREEN_WIDTH // 2, SCREEN_HEIGHT - 50, WHITE, center=True)
+   pygame.display.flip()
+
+   waiting = True
+   while waiting:
+       for event in pygame.event.get():
+           if event.type == pygame.QUIT:
+               pygame.quit()
+               sys.exit()
+           if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+               waiting = False
 
 
 # Main menu code
@@ -54,6 +91,10 @@ def main_menu():
 # Level 1 Game code (Game 1)
 def level_1():
    global level_1_completed
+
+     # Narrative for Level 1
+   narrative_screen("As the first wave of enemy ships closes in, you must navigate your fighter through the debris field and survive the onslaught. The safety of Zorath depends on your skill and courage.")
+
    # Load assets and variables for Level 1
    ship_img = pygame.image.load("spaceship.png")
    ship_img = pygame.transform.scale(ship_img, (50, 50))
@@ -192,6 +233,9 @@ def level_1():
 
 # Level 2 Game code (Game 2)
 def level_2():
+ # Narrative for Level 2
+   narrative_screen("With the enemy fleet neutralized, you land on their mothership. Armed only with The Excaliber and the finest magical powers in the galaxy, you must confront the alien leader and destroy the ultimate weapon. THE MECH BOSS!")
+
    # Load assets and variables for Level 2
    background = pygame.image.load("background2.png")
    player_img = pygame.image.load("player.png").convert_alpha()
@@ -478,6 +522,10 @@ def level_2():
 
 
 # Main game loop
+narrative_bg = pygame.image.load("spacebg.png")
+narrative_bg = pygame.transform.scale(narrative_bg, (SCREEN_WIDTH, SCREEN_HEIGHT))
+narrative_screen(prologue_text)
+
 while True:
    if menu_active:
        main_menu()
