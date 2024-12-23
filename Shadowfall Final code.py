@@ -24,7 +24,7 @@ clock = pygame.time.Clock()
 
 # Menu variables
 menu_active = True
-level_1_completed = True
+level_1_completed = False
 
 # defining fuctions (general)
 def draw_text(text, x, y, color, center=False):
@@ -251,7 +251,7 @@ def level_2():
    player_gravity = 1
    player_velocity_y = 0
    is_jumping = False
-   health = 100
+   health = 150
 
    monsters = []
    monster_speed = 2
@@ -270,7 +270,6 @@ def level_2():
    orb_spawn_rate = 120 
    orbs_collected = 0
 
-
    platforms = [
        pygame.Rect(SCREEN_WIDTH + i * 300, random.randint(200, SCREEN_HEIGHT - 150), 200, 20)
        for i in range(15)
@@ -278,8 +277,6 @@ def level_2():
    platform_color = GREEN
    bottom_platform = pygame.Rect(0, SCREEN_HEIGHT - 50, SCREEN_WIDTH, 50)  # bottom platform
 
-
-   "font = pygame.font.Font(None, 36)"
    running = True
    game_over = False
    game_completed = False
@@ -447,14 +444,13 @@ def level_2():
            # game over state
            for event in pygame.event.get():
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_r:
-                         
-                        # resetting varaibles
+                    if event.key == pygame.K_m:  
+                        running = False
+                    elif event.key == pygame.K_r:
                         platforms = [
                             pygame.Rect(SCREEN_WIDTH + i * 300, random.randint(200, SCREEN_HEIGHT - 150), 200, 20)
-                            for i in range(15)
-                        ]
-                        monsters.clear()
+                            for i in range(15)]
+                        monsters.clear() # resetting varaibles
                         orbs.clear()
                         boss_projectiles.clear()
                         boss_active = False
@@ -467,9 +463,6 @@ def level_2():
                         game_over = False
                         frame_count = 0
                         pygame.mixer.music.play(-1)
-
-                    elif event.key == pygame.K_m:  
-                        running = False
 
        pygame.display.flip()
        clock.tick(FPS)
